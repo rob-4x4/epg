@@ -1,0 +1,10 @@
+name: epg
+services:
+    epg:
+        container_name: epg
+        volumes:
+            - /PlexStorage/epg/public:/epg/public
+            - /PlexStorage/epg/channels.xml:/epg/channels.xml
+        ports:
+            - 5000:3000
+        image: localhost/epg:latest
