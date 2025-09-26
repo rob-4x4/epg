@@ -1,3 +1,4 @@
+echo "Updating channels\n"
 #CHANNELS="/PlexStorage/epg/channels.xml"
 CHANNELS="channels.xml"
 echo '<?xml version="1.0" encoding="UTF-8"?>' >$CHANNELS
