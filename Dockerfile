@@ -11,7 +11,7 @@ ENV TZ=Australia/Melbourne
 ENV DELAY=10
 RUN apk update \
     && apk upgrade --available \
-    && apk add curl git tzdata bash gzip \
+    && apk add curl git tzdata bash gzip libxml2-utils \
     && npm install -g npm@latest \
     && npm install pm2 -g \
     && mkdir $(echo "${WORKDIR}") -p \
@@ -23,6 +23,7 @@ RUN apk update \
     && cp -Rf epg/sites /epg \
     && cd $WORKDIR \
     && rm -rf /tmp/tmp22 \
+    && /epg/mkchannels \
     && npm install 
 VOLUME /epg/public
 RUN ln -s /epg/public /public \

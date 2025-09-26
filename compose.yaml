@@ -1,22 +1,40 @@
 name: epg
+
 services:
-    epg:
-        container_name: epg
-        volumes:
-            - /PlexStorage/epg/public:/epg/public    # Map local directory to foler in container
-            - /PlexStorage/epg/channels.xml:/epg/channels.xml
-        environment:
-            - PUID=1000                 # Your user ID
-            - PGID=1000                 # Your group ID
-            - TZ=Australia/Melbourne    # Your timezone
-           # - CRON_SCHEDULE='"0 0 * * *"' # Schedule for EPG updates (e.g., daily at midnight)  Note this causes errors on container startup
-            - MAX_CONNECTIONS=1         # Limit on the number of concurrent requests (default: 1)
-            - GZIP=true                 # Boolean value indicating whether to create a compressed version of the guide (default: false)
-           # - CURL=false                # Display each request as CURL (default: false)
-            - DAYS=14                   # Number of days for which the guide will be loaded (defaults to the value from the site config)
-            - TIMEOUT=1000              # Timeout for each request in milliseconds (default: 0)
-            - DELAY=1000                # Delay between request in milliseconds (default: 0)
-            - RUN_AT_STARTUP=true       # Run grab on container startup (default: true)
-        ports:
-            - 5000:3000
-        image: localhost/epg:latest
+  epg:
+    image: localhost/epg:latest
+    container_name: epg
+
+    ports:
+      - "5000:3000"          # keep if you still want host access; safe to remove if internal-only
+
+    volumes:
+      - /PlexStorage/epg/public:/epg/public:rw,Z
+      - /PlexStorage/epg/channels.xml:/epg/channels.xml:rw,Z
+
+    environment:
+      PUID: "1000"
+      PGID: "1000"
+      TZ: Australia/Melbourne
+      CRON_SCHEDULE: "0 0 * * *"
+      MAX_CONNECTIONS: "1"
+      GZIP: "true"
+      DAYS: "14"
+      TIMEOUT: "1000"
+      DELAY: "100"
+      RUN_AT_STARTUP: "true"
+
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+    restart: unless-stopped
+    networks:
+      - shared
+
+networks:
+  shared:
+    external: true
+
