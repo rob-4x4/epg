@@ -17,12 +17,12 @@ RUN apk update \
     && mkdir $(echo "${WORKDIR}") -p \
     && cd $WORKDIR \
     && git clone --depth 1 -b $(echo "${GIT_BRANCH} ${GIT_REPO}") . \
-    && mkdir /tmp/tmp22 \
-    && cd /tmp/tmp22 \
+    && mkdir /tmp2 \
+    && cd /tmp22 \
     && git clone https://github.com/iptv-org/epg \
-    && cp -Rf epg/sites /epg \
+    && cp -Rf sites /epg \
     && cd $WORKDIR \
-    && rm -rf /tmp/tmp22 \
+    && rm -rf /tmp22
     && npm install 
 VOLUME /epg/public
 RUN ln -s /epg/public /public \
