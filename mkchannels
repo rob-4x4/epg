@@ -1,8 +1,8 @@
-# CHANNELS="/PlexStorage/epg/channels.xml"
-CHANNELS="channels.xml"
+CHANNELS="/PlexStorage/epg/channels.xml"
+# CHANNELS="channels.xml"
 echo '<?xml version="1.0" encoding="UTF-8"?>' >$CHANNELS
 echo '<channels>' >>$CHANNELS
-cat sites/*/*.xml|grep -v "</channels>"|grep -v "<channels>"|grep '<channel site='|grep 'lang="en"'|sort -u  >>$CHANNELS
+cat sites/*/*.xml|grep -v "</channels>"|grep -v "<channels>"|grep '<channel site='|grep 'lang="en"'|grep 'abc.net.au'|grep Brisbane|sort -u  >>$CHANNELS
 echo '</channels>' >>$CHANNELS
 xmllint --noout $CHANNELS
 
